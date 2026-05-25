@@ -18,14 +18,7 @@ def events_layout():
 
     # Load data
     weather = fetch_weather_forecast(days=7)
-
     events = get_events_df()
-    events["month"] = events["date"].dt.to_period("M").dt.to_timestamp()
-    genre_month = (
-        events.groupby(["month", "genre"])
-        .size()
-        .reset_index(name="num_events")
-    )
 
     # Count events per day
     events_per_day = (
@@ -134,15 +127,14 @@ def events_layout():
     st.markdown("Stockholm's cultural life peaks on weekends — Saturday alone accounts for nearly a third of all weekly events."
                 "If you prefer smaller crowds, mid-week offers a more low-key experience with fewer but often more intimate events.")
 
-    df = get_events_df()
-    fig = plot_events_weekday(df)
+
+    fig = plot_events_weekday(events)
     st.pyplot(fig)
 
     st.subheader("How is the scene distributed over the year?")
     st.markdown("Arts & Theatre dominates Stockholm's cultural scene in spring, while Music maintains a steady presence through the year. "
                 "July is the quietest month across all segments.")
 
-    st.cache_data.clear()
     st.pyplot(plot_segment_over_time(events))
     st.markdown("Note: Event activity naturally dips during summer, picking up again in the fall as venues announce their autumn programmes.")
 
