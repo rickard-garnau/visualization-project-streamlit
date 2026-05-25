@@ -10,7 +10,7 @@ STHLMs PULS combines event data from multiple sources with real-time weather for
 This streamlit dashboard is built as an extension of a group project that we did with UX.
 
 ## STHLMs PULS APP
-[**Explore the Live App →**](https://visualization-project-app-fk6ncp7xfgrsqmbp7mehwv.streamlit.app/events)
+[**Explore the Live App →**](https://sthlmpuls.streamlit.app/)
 
 ## Data Sources
 
