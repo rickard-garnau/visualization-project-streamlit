@@ -79,6 +79,15 @@ def plot_events_weather(df_merged: pd.DataFrame) -> plt.Figure:
     return fig
 
 
+def _apply_base_style(fig, ax):
+    fig.patch.set_facecolor(COLORS["blue_light"])
+    ax.set_facecolor(COLORS["blue_light"])
+    ax.spines[["top", "right", "left"]].set_visible(False)
+    ax.spines["bottom"].set_color(COLORS["gray_1"])
+    ax.tick_params(colors=COLORS["blue_dark"], labelsize=9, length=0, pad=5)
+    ax.yaxis.grid(True, color=COLORS["gray_1"], linewidth=0.5, linestyle="--")
+    ax.set_axisbelow(True)
+
 
 def plot_events_weekday(df: pd.DataFrame):
 
@@ -90,20 +99,12 @@ def plot_events_weekday(df: pd.DataFrame):
     pct = (day_counts / total * 100).round(1)
 
     fig, ax = plt.subplots(figsize=(8, 3))
-    fig.patch.set_facecolor(COLORS["blue_light"])
-    ax.set_facecolor(COLORS["blue_light"])
 
     ax.plot(day_labels, pct.values, color=COLORS["pink"], linewidth=2.5,
             marker='o', markersize=7, markerfacecolor='white',
             markeredgecolor=COLORS["pink"], markeredgewidth=2)
     ax.fill_between(day_labels, pct.values, alpha=0.1, color=COLORS["pink"])
-
-    ax.spines[['top', 'right', 'left']].set_visible(False)
-    ax.spines['bottom'].set_color(COLORS["gray_1"])
-    ax.tick_params(colors=COLORS["blue_dark"], labelsize=10, length=0, pad=5)
-    ax.set_xlabel('shares of events (%)', color=COLORS["blue_dark"], fontsize=7)
-    ax.yaxis.grid(True, color=COLORS["gray_1"], linewidth=0.5, linestyle='--')
-    ax.set_axisbelow(True)
+    _apply_base_style(fig, ax)
 
     ax.set_title(
     'Stockholm is a weekend city – saturday dominates',
@@ -136,10 +137,8 @@ def plot_segment_over_time(df: pd.DataFrame) -> plt.Figure:
         "Miscellaneous": COLORS["blue_dark"],
         "Nightlife": COLORS["gray_3"],
     }
-
     fig, ax = plt.subplots(figsize=(8, 3))
-    fig.patch.set_facecolor(COLORS["blue_light"])
-    ax.set_facecolor(COLORS["blue_light"])
+
 
     for segment, group in segment_month.groupby("segment"):
         color = segment_colors.get(segment, COLORS["gray_1"])
@@ -148,13 +147,8 @@ def plot_segment_over_time(df: pd.DataFrame) -> plt.Figure:
                 marker="o", markersize=7, markerfacecolor="white",
                 markeredgecolor=color, markeredgewidth=2)
 
+    _apply_base_style(fig, ax)
     ax.xaxis.set_major_formatter(mdates.DateFormatter("%b"))
-
-    ax.spines[["top", "right", "left"]].set_visible(False)
-    ax.spines["bottom"].set_color(COLORS["gray_1"])
-    ax.tick_params(colors=COLORS["blue_dark"], labelsize=9, length=0, pad=5)
-    ax.yaxis.grid(True, color=COLORS["gray_1"], linewidth=0.5, linestyle="--")
-    ax.set_axisbelow(True)
     ax.set_ylabel("Number of events", color=COLORS["blue_dark"], fontsize=7)
     ax.set_yticks([0, 20, 40, 60, 80, 100, 120])
     ax.legend(fontsize=8, frameon=False, labelcolor=COLORS["blue_dark"])
